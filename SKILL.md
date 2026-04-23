@@ -1,4 +1,7 @@
-# Sophia.skill
+---
+name: sophia-skill
+description: Use when the user wants to create an image and needs guided clarification before generation, especially when their idea is vague or they do not know how to describe it in prompt language.
+---
 
 ## 一句话定位
 把用户脑子里模糊的画面和想法，变成清晰且 AI 完全意会的图片指令，大幅提升 AI 作图上限。
