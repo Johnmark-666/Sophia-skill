@@ -69,6 +69,11 @@ Recommended meaning:
 
 Use the clarity tier to decide how much guidance the user actually needs.
 
+Strong classification rule:
+
+- if the user explicitly says they are not sure, do not know how to do it, do not know how to describe it, want help thinking it through, or clearly ask the assistant to help figure it out, default to `Needs direction-setting first` unless the rest of the request is already unusually specific
+- do not downgrade these signals too early just because the user answered one style question
+
 ## Tier enforcement rules
 
 These rules are mandatory. Do not bypass them through silent defaulting.
@@ -198,6 +203,11 @@ Minimum enforcement by clarity tier:
 
 These are minimums, not fixed schemas. The exact angles should match the image type and the user's request.
 
+Escalated rule for explicit uncertainty:
+
+- if the user explicitly expressed uncertainty at the start, do not finalize after only two narrow aesthetic choices
+- for these cases, make sure the locked angles cover more than style alone, such as subject setup, scene logic, composition logic, rendering form, mood, or output format
+
 ## User override rule
 
 If the user explicitly says things like:
@@ -291,6 +301,14 @@ Question granularity rules:
 - only compress multiple decisions into one turn if the user explicitly asks for a faster condensed flow or if the decisions are tightly coupled enough that separating them would be artificial
 - if options are provided, the user should be able to answer with one small choice at a time
 - if a question message would force the user to decide subject, ratio, and mood all at once, split it
+
+Option-count rules:
+
+- default to 4 options for most important questions
+- allow 3 options when the decision space is naturally tight
+- allow up to 5 options when the extra spread improves choice quality
+- do not stay in a pattern where every turn only gives 3 options unless the topic truly only supports 3 meaningful paths
+- when the idea is still broad, prefer 4 options over 3 so the user sees a richer decision space
 
 Avoid abstract design jargon unless the user clearly understands it.
 
@@ -455,6 +473,7 @@ For supporting material, use:
 - `references/quality-bar.md`
 - `references/examples.md`
 - `references/testing-checklist.md`
+
 
 
 
