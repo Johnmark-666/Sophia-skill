@@ -1,65 +1,43 @@
 # Final Brief Template
 
-Before final output, Sophia Skill should internally assemble a final visual brief.
+## User-visible output
 
-The final user-facing result does not always need to show every label, but the content should be covered.
+Use this order:
 
-## Internal structure
+1. Final visual brief
+2. Final prompt
+3. Optional avoid block
+
+## Final visual brief
+
+Keep it short and readable.
+
+Recommended shape:
+
+- one line for use case
+- one line for subject
+- one line for composition
+- one line for color and lighting
+- one line for material, mood, or borrowing boundary if relevant
+
+## Final prompt template
 
 ```text
-[Image type]
-What kind of image this is.
+Create [image type and use case].
 
-[Use case]
-Where or how the image will be used.
+Show [main subject] as the clear focus.
 
-[Main subject]
-What the viewer should notice first.
+Use [composition and framing].
 
-[Subject presentation]
-How the main subject appears: centered, floating, close-up, full-body, integrated into a scene, etc.
+Use [palette and lighting direction].
 
-[Overall direction]
-The main visual direction: premium, warm, cinematic, editorial, app showcase, product campaign, etc.
+Make materials, surface treatment, and background feel [specific visible finish].
 
-[Visual form]
-Whether it feels like photography, brand poster, app showcase, cinematic still, illustration, or concept art.
+Translate the intended mood into visible image choices rather than vague labels.
 
-[Composition]
-Aspect ratio, layout, subject placement, empty space, hierarchy, depth, and whether text space is needed.
-
-[Color]
-Main color palette and supporting colors.
-
-[Lighting]
-Lighting style, contrast, mood, and atmosphere.
-
-[Material and texture]
-Glass, metal, matte, paper, skin texture, fabric, product rendering, film grain, etc.
-
-[Reference image usage]
-If any reference image exists, define exactly what to borrow and what not to copy.
-
-[Mood and message]
-What the final image should communicate emotionally and visually.
-
-[Avoid]
-What the image should avoid.
-
-[Final image instruction]
-A complete, polished, natural-language instruction ready for image generation.
+Avoid [short list of likely failure modes].
 ```
 
-## Final output behavior
+## Prompt loyalty rule
 
-If image generation is available:
-
-- Generate only after clarification is complete.
-- Do not generate intermediate images.
-- Do not generate multiple versions unless the user explicitly asks.
-
-If image generation is not available:
-
-- Output one polished final image instruction.
-- Make it ready to paste into an image generation model.
-- Do not pretend that an image was generated.
+The final prompt must be a faithful expansion of the final visual brief, not a reinterpretation of it.
