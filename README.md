@@ -44,4 +44,3 @@ It is not mainly a prompt-writing tool. It is a guided visual decision workflow 
 
 The goal is not to ask more questions. The goal is to help a user get to a stronger image with less friction and less guesswork.
 
-
