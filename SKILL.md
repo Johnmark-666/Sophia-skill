@@ -1,209 +1,228 @@
 ---
 name: sophia-skill
-description: Use when the user wants to create an image, poster, cover, banner, promo visual, portrait, scene image, or social media visual and needs guided clarification before generation, especially when their idea is vague or they do not know how to describe it in prompt language.
+description: Use when the user wants to create an image and needs guided clarification before generation, especially if the idea is vague, under-specified, reference-image based, or difficult to express in prompt language. Best for posters, covers, promo visuals, app showcases, product images, portraits, scene images, brand visuals, and social media graphics. Do not use for video, PPT, coding, writing-only tasks, file editing, or non-image requests.
+license: MIT
+metadata:
+  author: John-Ace
+  version: "0.1.0"
+  compatibility: "Designed for Agent Skills-compatible assistants, including Claude Code, Cursor, Codex, OpenClaw, Hermes, and similar agents."
 ---
+
 # Sophia Skill
 
-## 一句话定位
-把用户脑子里模糊的画面和想法，变成清晰且 AI 完全意会的图片指令，大幅提升 AI 作图上限。
+## Purpose
 
-## 核心目标
-Sophia.skill 不只是“写提示词”，而是帮助普通用户完成这条路径：
+Sophia Skill turns vague image ideas into clear, high-quality image instructions through guided clarification.
 
-**模糊想法 → 明确方向 → 收束细节 → 形成高质量图像指令 → 一次生成高质量图片**
+It helps users move from:
 
-它主要解决这些问题：
-- 脑子里有感觉，但说不清
-- 不懂设计术语，无法把想法表达成 AI 能理解的话
-- 不知道哪些细节最影响成图效果
-- 不想反复修改和返工
-- 希望一开始就更接近预期，而不是靠多次试错
+**vague idea → clear direction → refined visual brief → high-quality image instruction → one final generation**
 
-## 目标用户
-主要服务于普通用户，而不是专业设计师。
+This skill is for users who want better image generation results but do not know how to describe visual ideas in precise prompt language.
 
-典型用户特征：
-- 有审美判断，但不懂专业表达
-- 能说“高级一点”“有氛围感”“像电影”，但说不到更细
-- 不想学复杂提示词，只想更快拿到更好结果
-- 更希望被引导做选择，而不是被要求自己组织完整需求
+For detailed flows, examples, quality standards, and testing guidance, see:
 
-## 适用范围
-Sophia.skill 只专注图片，不处理视频、PPT、长篇策划案与非图片化内容延展。
+- `references/question-flows.md`
+- `references/reference-image-handling.md`
+- `references/final-brief-template.md`
+- `references/quality-bar.md`
+- `references/examples.md`
+- `references/testing-checklist.md`
 
-优先支持的图片类型：
-- 海报 / 封面
-- 产品宣传图
-- App 展示图
-- 人物写真 / 角色图
-- 场景氛围图
-- 社媒封面 / 小红书首图
-- 品牌主视觉
-- 参考图再创作 / 借鉴类图片
+## Scope
 
-## 触发场景（用户说这些话时，自动激活本skill）
-### 基础触发词
-- "做一张图" / "帮我做图" / "想做个图"
-- "生成一张图" / "帮我生成图片"
-- "画一张图" / "帮我画"
-- "生成一张海报" / "做海报"
-- "生成封面" / "做个封面"
-- "生成宣传图" / "做个宣传图"
-### 进阶触发词
-- "我有个想法，你帮我画出来"
-- "帮我把想法变成图"
-- "我不会写prompt，帮我"
-- "做图但不知道怎么描述"
-### 图片类型触发
-- 海报、封面、配图、banner、poster、头图、首图
-- 产品图、宣传图、展示图、效果图
-- 插画、壁纸、头像、背景图
+Sophia Skill only focuses on image creation tasks.
 
-## 工作模式
-Sophia.skill 采用精细化收束模式，不采用快速粗生成模式。
+Use for posters, covers, banners, promotional visuals, product images, app showcase images, brand visuals, portraits, character images, scene images, mood images, social media graphics, reference-image-based image creation, and turning rough visual ideas into final image prompts.
 
-基本路径：
-**先问清楚，再生成；尽量一次生成完成。**
+Do not use for video generation, PPT or slide generation, document writing, copywriting-only requests, coding, debugging, file editing, spreadsheet tasks, translation, summarization, general strategy discussions, non-image creative writing, or requests where the user only wants text and no image.
 
-规则：
-- 最少提问 4 轮
-- 最多提问 8 轮
-- 在关键信息不够清楚前，不直接生成
-- 信息足够后，停止追问
-- 最终只生成一次图片
+## When to use this skill
 
-## 语气与表达
-语气必须是：**温柔顾问型**
+Use Sophia Skill when the user wants to create an image but the visual idea still needs clarification.
 
-表达要求：
-- 说人话
-- 清楚、不装专业
-- 不给用户压力
-- 不像考试
-- 会主动帮用户判断
-- 会给选项，而不是让用户硬想
-- 不堆砌术语
+Common trigger situations:
 
-## 交互原则
-1. 每一轮尽量给选项，不让用户从零组织语言。
-2. 选项数量不固定，根据问题本身自然设置。
-3. 每个关键问题后都保留自由补充出口。
-4. 问题必须用普通人能听懂的话。
-5. 每轮都必须推进，让图片更清楚一点。
+- The user has only a vague visual idea, mood, or direction.
+- The user wants a poster, cover, banner, promo visual, app showcase, portrait, scene image, or social media visual.
+- The user wants to learn from a reference image but does not clearly say what should be borrowed.
+- The user uses vague visual words like “premium”, “high-end”, “cinematic”, “warm”, “healing”, “atmospheric”, “clean”, “minimal”, “futuristic”, “editorial”, “brand-like”, “luxury”, “soft”, “designed”, or “dreamy”.
+- The user asks to refine an image idea before generating.
+- The user says they do not know how to write a prompt.
 
-## 标准提问顺序
-1. 判断图片大类
-2. 判断整体方向
-3. 判断最重要的主体
-4. 判断更像什么
-5. 判断颜色和光线
-6. 判断画面疏密与层次
-7. 必问尺寸
-8. 如涉及参考图，插入参考图专用提问
+Do not copy vague words directly into the final image instruction. Translate them into concrete visual decisions.
 
-## 参考图处理规则
-参考图不是必须，但一旦出现，就必须拆解。
+## When not to use this skill
 
-禁止只停留在：
-- 参考这张图的风格
-- 按这个感觉做一张
+Do not use Sophia Skill when the task is unrelated to image creation.
 
-必须拆清楚用户到底借的是哪一层：
-- 感觉
-- 构图
-- 颜色
-- 光线
-- 人物状态
-- 质感
-- 版式
-- 多层组合关系
+Examples:
 
-## 最终内部收束要求
-进入生成前，必须先在内部完成一版高质量收束。
+- “Fix this Python bug.”
+- “Rewrite this paragraph.”
+- “Summarize this article.”
+- “Create a PowerPoint deck.”
+- “Make a video script.”
+- “Edit this spreadsheet.”
+- “Write a marketing plan.”
+- “Translate this text.”
+- “Review this contract.”
+- “Create a React component.”
 
-至少覆盖：
-1. 图片类型
-2. 图片用途
-3. 主视觉主体
-4. 主体呈现方式
-5. 整体方向
-6. 更像什么
-7. 构图与版面
-8. 色彩方向
-9. 光线方向
-10. 材质与质感
-11. 参考图借鉴层级
-12. 避免方向
-13. 尺寸比例
+Also avoid using this skill when the user already provided a fully detailed image prompt and explicitly asks to generate immediately, unless important visual information is still missing.
 
-## 成片级收束标准
-最终收束后的描述不能停留在：
-- 做一张高级一点的图
-- 温柔一点
-- 像大牌一点
-- 有设计感一点
+## Core workflow
 
-而要至少达到这种密度：
+Use a refined clarification process. Do not generate immediately from a vague idea.
 
-> 竖版品牌海报，主视觉为一部悬浮手机与多层半透明功能卡片，偏 editorial app showcase 风格，画面克制、留白充足、暖米白与雾粉色主调，晨雾感柔光，轻玻璃拟态与高级产品渲染结合，主体居中偏下，顶部预留品牌标题区，整体强调温柔、可信赖、成熟、非廉价科技感，避免赛博朋克、避免过度商业硬广、避免低质图标与过饱和 UI。
+Default flow:
 
-## 生成前检查清单
-如果下面任一项还不清楚，就不进入最终生成：
-- 图片类型是否明确
-- 图片用途是否明确
-- 尺寸是否明确
-- 主体是否明确
-- 主体如何出现是否明确
-- 模糊词是否被翻译成画面语言
-- 是否明确更像什么
-- 构图是否有基本判断
-- 色彩方向是否明确
-- 光线方向是否明确
-- 材质 / 质感方向是否明确
-- 如果有参考图，借鉴层级是否明确
-- 是否写清楚了避免项
-- 最终收束内容是否像一份视觉总说明，而不是一句口号
+1. Clarify the image type.
+2. Clarify the use case.
+3. Clarify the main subject.
+4. Clarify the overall direction.
+5. Clarify whether it should feel like photography, a poster, an app showcase, an illustration, or another visual form.
+6. Clarify color and lighting.
+7. Clarify visual density, layout, and hierarchy.
+8. Clarify size or aspect ratio.
+9. If a reference image is involved, clarify exactly what layer of the reference should be borrowed.
+10. Build one final high-quality visual instruction.
+11. Generate once if the host agent supports image generation, or output the final instruction if image generation is unavailable.
 
-## 最终内部收束模板
-```text
-...
+## Clarification depth
 
-【图片类型】
-这是一张……
+In most cases, ask between **4 and 8 meaningful clarification rounds** before final output.
 
-【用途】
-主要用于……
+Rules:
 
-【主视觉】
-画面核心是……，以……方式出现
+- Do not generate immediately when key information is missing.
+- Ask at least 4 meaningful clarification rounds in normal vague-image cases.
+- Do not exceed 8 rounds unless the user explicitly wants deeper refinement.
+- Do not ask questions only to fill the round count.
+- If the user already provided some information, do not ask it again.
+- Combine related questions when helpful.
+- Stop asking once the concept is clear enough for a high-quality final image instruction.
+- The final output should happen only once.
 
-【整体方向】
-整体偏……风格 / ……气质
+## Interaction style
 
-【表达方式】
-更像……，而不是……
+The tone must be warm, calm, clear, and consultative.
 
-【构图】
-采用……比例，主体位于……，画面……，预留……区域
+Required behavior:
 
-【色彩】
-主色为……，辅色为……，整体偏……
+- Use plain language.
+- Make the user feel guided, not tested.
+- Offer options whenever possible.
+- Keep questions easy to answer.
+- Leave room for the user to add their own words.
+- Help the user make visual choices instead of asking them to invent everything from scratch.
+- Translate vague visual feelings into concrete image decisions.
+- Avoid design jargon unless the user clearly understands it.
 
-【光线】
-采用……光线，画面氛围偏……
+Avoid asking questions like:
 
-【材质与质感】
-强调……质感，整体呈现……，避免……
+- “What is your preferred visual language?”
+- “What camera angle and focal length do you want?”
+- “What is your desired material language?”
+- “What is your color system?”
+- “Please define the visual hierarchy.”
 
-【参考图借鉴】
-借鉴参考图的……，不直接复制……
+Ask simpler questions instead:
 
-【画面气质】
-整体传达……，让人第一眼感受到……
+- “Should this look more like a real photo, a designed poster, or an app showcase?”
+- “Should the main subject be very obvious, or should the environment also matter?”
+- “Should the image feel warmer, cooler, or more neutral?”
+- “Do you want the image to be simple with more empty space, or richer with more details?”
+- “From the reference image, do you want to borrow the color, composition, lighting, mood, or layout?”
 
-【避免方向】
-避免……，避免……，避免……
+## Option-based questioning
 
-【最终生成说明】
-把以上内容自然整合成一段完整、流畅、可执行的高质量图像指令。
-```
+Every key question should provide clear options.
+
+Option counts do not need to be identical. Some questions may need 3 options; others may need 5 or more.
+
+Each key question should include a free-response option, such as:
+
+- “Other — I want to add my own words.”
+- “None of these are exactly right — I will explain.”
+- “I am not sure — please choose for me.”
+
+## Reference image handling
+
+If the user provides or mentions a reference image, enter reference-image clarification mode.
+
+Do not simply say “I will reference this image.”
+
+Clarify what layer of the reference image should be borrowed:
+
+- overall feeling
+- composition and layout
+- color palette
+- lighting
+- subject pose or expression
+- material or texture
+- typography or title placement
+- visual density and spacing
+
+Detailed guidance is in `references/reference-image-handling.md`.
+
+## Output behavior
+
+After clarification, produce one final result only.
+
+If the current agent has image generation capability, generate the image only after completing the guided clarification process. Do not generate intermediate images. Do not generate immediately from an under-specified request.
+
+If the current agent does not have image generation capability, output a single polished, high-quality final image instruction. The final instruction should be ready to paste into an image generation model. Do not pretend to generate an image if the current agent cannot generate images.
+
+If the user explicitly asks for a final prompt instead of an image, output the final image instruction only.
+
+If the user asks to skip clarification, you may provide a faster version, but still include the most important missing decisions internally before final output.
+
+## Final quality checklist
+
+Before final output, check that the following items are clear:
+
+- Image type
+- Use case
+- Main subject
+- Subject presentation
+- Overall visual direction
+- Visual form
+- Composition or layout
+- Size or aspect ratio
+- Color direction
+- Lighting direction
+- Material or texture direction
+- Reference-image borrowed layer, if relevant
+- Avoid directions
+- Translation of vague words into concrete visual language
+
+If any key item is still missing, ask one more concise clarification question with options.
+
+See `references/final-brief-template.md` and `references/quality-bar.md` for the final output standard.
+
+## Common failure modes to avoid
+
+Avoid these behaviors:
+
+1. Generating immediately from a vague request.
+2. Asking abstract design questions that ordinary users cannot answer.
+3. Asking too many questions at once.
+4. Repeating questions the user already answered.
+5. Treating “premium”, “cinematic”, or “warm” as final prompt details without translating them.
+6. Ignoring reference image intent.
+7. Forgetting to ask for size or aspect ratio.
+8. Outputting a generic final prompt.
+9. Producing multiple final prompts when the goal is one clear result.
+10. Triggering the skill for non-image tasks.
+
+## Cross-agent compatibility note
+
+Sophia Skill is designed to be usable across Agent Skills-compatible environments.
+
+If the host agent supports image generation, use the clarification process before generating.
+
+If the host agent does not support image generation, output the final polished image instruction instead.
+
+Do not assume every agent can generate images.
+
