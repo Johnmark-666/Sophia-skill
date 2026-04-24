@@ -1,26 +1,276 @@
 ---
-name: sophia-skill
-description: Use when the user wants to create an image and needs guided clarification before generation, especially if the idea is vague, under-specified, reference-image based, or difficult to express in prompt language. Best for posters, covers, promo visuals, app showcases, product images, portraits, scene images, brand visuals, and social media graphics. Do not use for video, PPT, coding, writing-only tasks, file editing, or non-image requests.
+name: sophia-image-clarifier
+description: Use when the user wants to create an image but the request is vague, under-specified, emotionally worded, reference-led, or hard to describe clearly. Also use when the user seems unsure, asks the assistant to choose, says they do not know how to describe the image, or would benefit from guided visual decision-making before generation. Best for posters, covers, promo visuals, product images, app showcases, portraits, scene images, brand visuals, and social media graphics.
 license: MIT
 metadata:
   author: John-Ace
-  version: "0.1.0"
+  version: "1.0.0"
   compatibility: "Designed for Agent Skills-compatible assistants, including Claude Code, Cursor, Codex, OpenClaw, Hermes, and similar agents."
 ---
 
-# Sophia Skill
+# Sophia Image Clarifier
 
 ## Purpose
 
-Sophia Skill turns vague image ideas into clear, high-quality image instructions through guided clarification.
+Sophia Image Clarifier turns vague image ideas into clear, high-quality image instructions through guided clarification.
 
-It helps users move from:
+It is for users who want better image results but do not know how to describe visual ideas precisely.
 
-**vague idea → clear direction → refined visual brief → high-quality image instruction → one final generation**
+The goal is to reduce user decision cost, not increase it.
 
-This skill is for users who want better image generation results but do not know how to describe visual ideas in precise prompt language.
+## Scope
 
-For detailed flows, examples, quality standards, and testing guidance, see:
+Use for image creation tasks such as posters, covers, product visuals, portraits, scenes, social graphics, app showcases, brand visuals, and reference-led image creation.
+
+Do not use for video generation, PPT generation, coding, writing-only requests, document editing, spreadsheets, or unrelated general strategy tasks.
+
+## Early detection and takeover
+
+Use this skill proactively when the user wants an image but has not provided a strong generation-ready brief.
+
+Common early signals:
+
+- the user uses vague image words such as premium, cinematic, minimal, dreamy, futuristic, high-end, clean, atmospheric, healing, or Apple-like
+- the user wants an image but does not clearly define the subject, form, or composition
+- the user says they are unsure, asks the assistant to choose, or says they do not know how to describe it
+- the user provides a reference image without clearly stating what should be borrowed
+- the user asks for something polished, advanced, brand-like, or good-looking without enough visible structure
+
+In these situations, do not wait for a full prompt. Activate the skill and guide the user into a lower-decision workflow.
+
+## When to use this skill
+
+Use this skill when:
+
+- the user has a vague image idea, mood, or direction
+- the user wants an image but cannot describe it clearly
+- the user wants help making visual decisions before generation
+- the user gives a fuzzy request and would benefit from early assistant takeover
+- the user uses a reference image but has not defined the borrowing boundary
+
+## Task routing
+
+Before asking questions, route the request into one dominant image mode:
+
+1. Product image
+2. Poster or campaign visual
+3. Social cover
+4. Portrait or character
+5. Reference-led image
+
+If the request overlaps multiple modes, choose the single dominant mode first.
+
+## Core workflow
+
+1. Route the request into one dominant mode.
+2. Clarify use case and main subject.
+3. Clarify visual form and overall direction.
+4. Clarify composition, density, and whether the environment matters.
+5. Clarify color, lighting, and finish.
+6. Clarify aspect ratio only when it materially affects the result.
+7. For reference-led work, clarify what should and should not be borrowed.
+8. Build one final visual brief.
+9. Build one final prompt.
+10. Generate once if image generation is available.
+
+## Completion gate
+
+The request is complete enough for final output when these are explicit or confidently defaulted:
+
+- subject
+- visual form
+- composition
+- color and lighting
+
+Mode-specific must-have details:
+
+- Product image: material finish and background style
+- Poster or campaign visual: composition emphasis and drama level
+- Social cover: focal point, readability area, and crop safety
+- Portrait or character: subject presentation and expression or attitude
+- Reference-led image: borrowed layer and non-borrowed layer
+
+Stop asking once the completion gate is satisfied unless one missing detail would materially change the image.
+
+## Clarification depth
+
+Use clarification depth based on task stakes:
+
+- Fast mode: 2 to 4 meaningful rounds for casual, exploratory, or lower-stakes requests
+- Director mode: 4 to 8 meaningful rounds for brand visuals, product posters, campaign work, reference-sensitive work, or other precision-critical requests
+
+Default to Fast mode unless the request clearly needs Director mode.
+
+If the skill was triggered proactively from a vague request, start in Fast mode unless the task is clearly high-stakes, commercial, reference-sensitive, or precision-critical.
+
+## Default assumption policy
+
+If the user is unsure, choose strong defaults instead of asking more questions.
+
+Default behavior:
+
+- choose the clearest subject-focused composition
+- choose lighting that reveals form and material quality
+- choose a restrained palette unless the user clearly wants bold color
+- choose a clean background unless environment is essential
+- choose one strong direction rather than averaging multiple competing ideas
+
+Mode defaults:
+
+- Product image: one hero object, low-noise palette, clean background, material-revealing light
+- Poster or campaign visual: one dominant focal subject, stronger contrast, breathing or title space
+- Social cover: one-second readability, bold focal area, reduced edge clutter
+- Portrait or character: expression readable first, styling second, background supportive
+- Reference-led image: borrow only the approved layer and keep everything else original to the new brief
+
+## Interaction style
+
+The tone must be warm, calm, clear, and consultative.
+
+Required behavior:
+
+- use plain language
+- offer options whenever possible
+- keep questions easy to answer
+- ask only questions that materially change the image
+- help the user choose instead of forcing them to invent everything
+
+Avoid abstract design jargon unless the user clearly understands it.
+
+## Mode-specific question paths
+
+- Product image: hero object -> material or finish -> viewing angle -> background style -> aspect ratio if commercial placement matters
+- Poster or campaign visual: dominant subject -> drama level -> composition structure -> title or breathing space -> palette and lighting direction
+- Social cover: focal point -> platform or crop safety -> readability area -> contrast and density -> aspect ratio
+- Portrait or character: subject presentation -> expression or attitude -> styling direction -> background role -> color and light
+- Reference-led image: what is borrowed -> what is not borrowed -> how the new subject differs -> whether composition, color, or mood remains primary
+
+## Translating vague words
+
+Do not pass vague adjectives straight into the final prompt without translating them into visible image decisions.
+
+Examples:
+
+- premium -> restrained composition, precise materials, controlled highlights, no clutter
+- cinematic -> directional light, contrast separation, layered depth, stronger visual drama
+- minimal -> strong negative space, one focal subject, reduced visual noise
+- futuristic -> clean geometry, controlled glow, advanced materials, precise surfaces
+- editorial -> deliberate layout, stronger hierarchy, sharper styling choices
+
+If a translation is not visible in the image, it is not strong enough.
+
+## Reference image handling
+
+If the user provides a reference image, clarify what layer should be borrowed:
+
+- overall feeling
+- composition
+- color palette
+- lighting
+- pose or expression
+- material or texture
+- typography or title placement
+- spacing and density
+
+Also clarify what should not be borrowed.
+
+## Output behavior
+
+Produce one final result only.
+
+If image generation is available:
+
+1. show the final visual brief
+2. show the final prompt
+3. generate the image from that prompt
+
+If image generation is unavailable:
+
+1. show the final visual brief
+2. show the final prompt only
+
+Do not keep the final prompt hidden by default.
+
+## Final output structure
+
+Preferred user-visible structure:
+
+1. Final visual brief: 3 to 6 short lines in plain language
+2. Final prompt: one polished generation-ready prompt
+3. Optional avoid block: only when the model benefits from it
+
+## Final prompt format
+
+Write the final prompt in this order:
+
+1. image type and use case
+2. main subject
+3. composition and framing
+4. color and lighting
+5. material, texture, and environment treatment
+6. translated mood or style decisions
+7. concise avoid directions
+
+Do not use empty labels such as premium, cinematic, or luxury as standalone anchors.
+
+## Anti-drift rule
+
+After the brief is clarified, the final prompt must stay tightly coupled to it.
+
+Allowed:
+
+- strengthening an approved direction
+- making a chosen lighting or composition decision more precise
+- adding minor supporting detail that does not change the concept
+
+Not allowed:
+
+- adding a new subject
+- adding a new setting or environment axis
+- adding extra props that change the concept
+- shifting the style direction into a new lane the user did not approve
+- making the image busier just because the model tends to reward detail
+
+## Conflict resolution policy
+
+When the user asks for contradictory qualities, do not preserve every adjective.
+
+Resolve conflicts in this order:
+
+1. Subject clarity
+2. Use case fitness
+3. Composition readability
+4. Color and lighting coherence
+5. Mood or style adjectives
+
+If two qualities conflict, preserve the higher-priority one and compress or drop the lower-priority one.
+
+## Model adaptation
+
+If the target model is known, adapt prompt density and structure to the model family.
+
+If the target model is unknown, use a portable fallback:
+
+- 120 to 220 words
+- intent -> subject -> composition -> color and lighting -> material or background -> avoid
+- one coherent block or short labeled blocks
+- short separate avoid block
+
+## Internal quality rewrite
+
+Before final output, silently check:
+
+- Is the subject unmistakably clear
+- Are any abstract words still unresolved
+- Is the composition too vague or too busy
+- Are lighting and material cues visible enough to matter
+- Does the final prompt remain loyal to the final brief
+
+Rewrite once if needed.
+
+## References
+
+For supporting material, use:
 
 - `references/question-flows.md`
 - `references/reference-image-handling.md`
@@ -29,200 +279,4 @@ For detailed flows, examples, quality standards, and testing guidance, see:
 - `references/examples.md`
 - `references/testing-checklist.md`
 
-## Scope
-
-Sophia Skill only focuses on image creation tasks.
-
-Use for posters, covers, banners, promotional visuals, product images, app showcase images, brand visuals, portraits, character images, scene images, mood images, social media graphics, reference-image-based image creation, and turning rough visual ideas into final image prompts.
-
-Do not use for video generation, PPT or slide generation, document writing, copywriting-only requests, coding, debugging, file editing, spreadsheet tasks, translation, summarization, general strategy discussions, non-image creative writing, or requests where the user only wants text and no image.
-
-## When to use this skill
-
-Use Sophia Skill when the user wants to create an image but the visual idea still needs clarification.
-
-Common trigger situations:
-
-- The user has only a vague visual idea, mood, or direction.
-- The user wants a poster, cover, banner, promo visual, app showcase, portrait, scene image, or social media visual.
-- The user wants to learn from a reference image but does not clearly say what should be borrowed.
-- The user uses vague visual words like “premium”, “high-end”, “cinematic”, “warm”, “healing”, “atmospheric”, “clean”, “minimal”, “futuristic”, “editorial”, “brand-like”, “luxury”, “soft”, “designed”, or “dreamy”.
-- The user asks to refine an image idea before generating.
-- The user says they do not know how to write a prompt.
-
-Do not copy vague words directly into the final image instruction. Translate them into concrete visual decisions.
-
-## When not to use this skill
-
-Do not use Sophia Skill when the task is unrelated to image creation.
-
-Examples:
-
-- “Fix this Python bug.”
-- “Rewrite this paragraph.”
-- “Summarize this article.”
-- “Create a PowerPoint deck.”
-- “Make a video script.”
-- “Edit this spreadsheet.”
-- “Write a marketing plan.”
-- “Translate this text.”
-- “Review this contract.”
-- “Create a React component.”
-
-Also avoid using this skill when the user already provided a fully detailed image prompt and explicitly asks to generate immediately, unless important visual information is still missing.
-
-## Core workflow
-
-Use a refined clarification process. Do not generate immediately from a vague idea.
-
-Default flow:
-
-1. Clarify the image type.
-2. Clarify the use case.
-3. Clarify the main subject.
-4. Clarify the overall direction.
-5. Clarify whether it should feel like photography, a poster, an app showcase, an illustration, or another visual form.
-6. Clarify color and lighting.
-7. Clarify visual density, layout, and hierarchy.
-8. Clarify size or aspect ratio.
-9. If a reference image is involved, clarify exactly what layer of the reference should be borrowed.
-10. Build one final high-quality visual instruction.
-11. Generate once if the host agent supports image generation, or output the final instruction if image generation is unavailable.
-
-## Clarification depth
-
-In most cases, ask between **4 and 8 meaningful clarification rounds** before final output.
-
-Rules:
-
-- Do not generate immediately when key information is missing.
-- Ask at least 4 meaningful clarification rounds in normal vague-image cases.
-- Do not exceed 8 rounds unless the user explicitly wants deeper refinement.
-- Do not ask questions only to fill the round count.
-- If the user already provided some information, do not ask it again.
-- Combine related questions when helpful.
-- Stop asking once the concept is clear enough for a high-quality final image instruction.
-- The final output should happen only once.
-
-## Interaction style
-
-The tone must be warm, calm, clear, and consultative.
-
-Required behavior:
-
-- Use plain language.
-- Make the user feel guided, not tested.
-- Offer options whenever possible.
-- Keep questions easy to answer.
-- Leave room for the user to add their own words.
-- Help the user make visual choices instead of asking them to invent everything from scratch.
-- Translate vague visual feelings into concrete image decisions.
-- Avoid design jargon unless the user clearly understands it.
-
-Avoid asking questions like:
-
-- “What is your preferred visual language?”
-- “What camera angle and focal length do you want?”
-- “What is your desired material language?”
-- “What is your color system?”
-- “Please define the visual hierarchy.”
-
-Ask simpler questions instead:
-
-- “Should this look more like a real photo, a designed poster, or an app showcase?”
-- “Should the main subject be very obvious, or should the environment also matter?”
-- “Should the image feel warmer, cooler, or more neutral?”
-- “Do you want the image to be simple with more empty space, or richer with more details?”
-- “From the reference image, do you want to borrow the color, composition, lighting, mood, or layout?”
-
-## Option-based questioning
-
-Every key question should provide clear options.
-
-Option counts do not need to be identical. Some questions may need 3 options; others may need 5 or more.
-
-Each key question should include a free-response option, such as:
-
-- “Other — I want to add my own words.”
-- “None of these are exactly right — I will explain.”
-- “I am not sure — please choose for me.”
-
-## Reference image handling
-
-If the user provides or mentions a reference image, enter reference-image clarification mode.
-
-Do not simply say “I will reference this image.”
-
-Clarify what layer of the reference image should be borrowed:
-
-- overall feeling
-- composition and layout
-- color palette
-- lighting
-- subject pose or expression
-- material or texture
-- typography or title placement
-- visual density and spacing
-
-Detailed guidance is in `references/reference-image-handling.md`.
-
-## Output behavior
-
-After clarification, produce one final result only.
-
-If the current agent has image generation capability, generate the image only after completing the guided clarification process. Do not generate intermediate images. Do not generate immediately from an under-specified request.
-
-If the current agent does not have image generation capability, output a single polished, high-quality final image instruction. The final instruction should be ready to paste into an image generation model. Do not pretend to generate an image if the current agent cannot generate images.
-
-If the user explicitly asks for a final prompt instead of an image, output the final image instruction only.
-
-If the user asks to skip clarification, you may provide a faster version, but still include the most important missing decisions internally before final output.
-
-## Final quality checklist
-
-Before final output, check that the following items are clear:
-
-- Image type
-- Use case
-- Main subject
-- Subject presentation
-- Overall visual direction
-- Visual form
-- Composition or layout
-- Size or aspect ratio
-- Color direction
-- Lighting direction
-- Material or texture direction
-- Reference-image borrowed layer, if relevant
-- Avoid directions
-- Translation of vague words into concrete visual language
-
-If any key item is still missing, ask one more concise clarification question with options.
-
-See `references/final-brief-template.md` and `references/quality-bar.md` for the final output standard.
-
-## Common failure modes to avoid
-
-Avoid these behaviors:
-
-1. Generating immediately from a vague request.
-2. Asking abstract design questions that ordinary users cannot answer.
-3. Asking too many questions at once.
-4. Repeating questions the user already answered.
-5. Treating “premium”, “cinematic”, or “warm” as final prompt details without translating them.
-6. Ignoring reference image intent.
-7. Forgetting to ask for size or aspect ratio.
-8. Outputting a generic final prompt.
-9. Producing multiple final prompts when the goal is one clear result.
-10. Triggering the skill for non-image tasks.
-
-## Cross-agent compatibility note
-
-Sophia Skill is designed to be usable across Agent Skills-compatible environments.
-
-If the host agent supports image generation, use the clarification process before generating.
-
-If the host agent does not support image generation, output the final polished image instruction instead.
-
-Do not assume every agent can generate images.
 
