@@ -160,6 +160,57 @@ Mode-specific must-have details:
 
 Stop asking once the completion gate is satisfied unless one missing detail would materially change the image.
 
+## Decision coverage rule
+
+Do not judge completion by turn count alone. Judge it by whether enough high-impact decision angles have been locked.
+
+For any request that is not `Ready to generate`, the assistant must lock enough professionally meaningful variables to materially shape the final image before moving to the final brief.
+
+Important:
+
+- the locked variables do not need to be the same for every image type
+- the assistant should choose the most relevant high-impact decision angles for the specific request
+- a single style choice is never enough to finalize a highly vague request
+- one answered question does not automatically mean enough decision coverage has been achieved
+
+Typical high-impact decision angles include:
+
+- subject definition
+- subject scale or count
+- visual form or rendering style
+- composition or framing logic
+- scene or background logic
+- lighting direction
+- color direction
+- material or texture treatment
+- mood or performance tone
+- aspect ratio or use-case format
+- reference borrowing boundary
+
+The assistant does not need to lock every angle. It must lock enough of the right angles to prevent premature finalization.
+
+Minimum enforcement by clarity tier:
+
+- Ready to generate: enough existing coverage to generate directly, or one critical missing angle at most
+- Needs quick completion: lock at least 2 high-impact decision angles before final generation
+- Needs several key decisions: lock at least 3 high-impact decision angles before final generation
+- Needs direction-setting first: lock at least 4 high-impact decision angles before final generation
+
+These are minimums, not fixed schemas. The exact angles should match the image type and the user's request.
+
+## User override rule
+
+If the user explicitly says things like:
+
+- "the rest you decide"
+- "you can fill in the rest"
+- "forget it, just generate"
+- "you handle the remaining details"
+
+then the assistant may complete the remaining secondary decisions through guided defaults and proceed.
+
+Without an explicit user override, do not assume permission to auto-complete too many missing high-impact variables.
+
 ## Clarification depth
 
 Use clarification depth based on both task stakes and clarity tier:
@@ -187,6 +238,12 @@ Minimum enforcement by tier:
 - Needs several key decisions: minimum 2 real clarification exchanges
 - Needs direction-setting first: start with real clarification; do not generate before at least 2 real clarification exchanges unless the user explicitly tells the assistant to decide everything
 
+Coverage enforcement by tier:
+
+- for `Needs quick completion`, do not finalize after only one shallow style choice if other important angles are still open
+- for `Needs several key decisions`, do not finalize until multiple high-impact angles are locked
+- for `Needs direction-setting first`, do not finalize after a single direction pick; continue until enough relevant decision angles are covered or the user explicitly authorizes the assistant to fill the rest
+
 ## Default assumption policy
 
 If the user is unsure, choose strong defaults instead of asking more questions.
@@ -210,6 +267,7 @@ Mode defaults:
 The more uncertain the user is, the more the skill should rely on strong guided defaults instead of repeated questioning.
 
 But strong defaults do not cancel the tier enforcement rules. For tiers 2 to 4, the assistant must still obtain the required user clarification exchanges before generation unless the user explicitly asks the assistant to fully decide on their behalf.
+And strong defaults do not erase the decision coverage rule: enough high-impact angles must still be locked unless the user explicitly authorizes the assistant to fill the rest.
 
 ## Interaction style
 
@@ -397,7 +455,6 @@ For supporting material, use:
 - `references/quality-bar.md`
 - `references/examples.md`
 - `references/testing-checklist.md`
-
 
 
 
