@@ -241,7 +241,10 @@ Prompt rules:
 - the prompt must be based on the clarified decisions
 - the prompt must follow the final visual brief
 - the prompt must not introduce a new subject, setting, prop, or style axis
-- the prompt should default to the user's language
+- the prompt must default to the user's language
+- if the user is using Chinese, output the prompt in Chinese
+- if the user is using English, output the prompt in English
+- if the user is using another language, default to that language when feasible
 - do not default to English for non-English users unless explicitly requested
 
 The final prompt appears once.
@@ -259,6 +262,9 @@ Generation rules:
 - generate from the exact shown final prompt
 - do not generate from a hidden rewritten variant
 - if the prompt changes, show the adjusted final prompt first
+- if image generation is available, do not stop at the prompt stage
+- once the final prompt is shown, continue to image generation in the same run
+- only stop at the prompt stage if image generation is unavailable or the user explicitly asks for prompt-only output
 
 ## Tier enforcement
 
@@ -354,7 +360,6 @@ Use supporting material from:
 - `references/quality-bar.md`
 - `references/examples.md`
 - `references/testing-checklist.md`
-
 
 
 
